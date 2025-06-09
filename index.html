@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<title>Catálogo de Servicios NNA – Victoria</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" rel="stylesheet">
+<link href="styles.css" rel="stylesheet"/>
+</link></head>
+<body>
+<header>
+<img alt="OLN Victoria" id="logo" src="https://i.ibb.co/xt65h5sq/20250603-1736-Correcci-n-Ortogr-fica-remix-01jwvvggfvfjdvgfm8n051tb6y-1.png"/>
+<h1>Catálogo de Servicios y Beneficios – Victoria</h1>
+</header>
+<div class="filters">
+<input id="searchBox" oninput="updateSearch(this.value)" placeholder="Buscar servicio..." type="text"/>
+<button class="filter-btn" onclick="setFilter('category', 'Salud')" title="Filtrar por Salud">
+<img alt="Salud" class="btn-icon" src="icons/Salud.png"/> Salud
+    </button>
+<button class="filter-btn" onclick="setFilter('category', 'Educación')" title="Filtrar por Educación">
+<img alt="Educación" class="btn-icon" src="icons/Educación.png"/> Educación
+    </button>
+<button class="filter-btn" onclick="setFilter('category', 'Prevención')" title="Filtrar por Prevención">
+<img alt="Prevención" class="btn-icon" src="icons/Prevención.png"/> Prevención
+    </button>
+<button class="filter-btn" onclick="setFilter('category', 'Protección')" title="Filtrar por Protección">
+<img alt="Protección" class="btn-icon" src="icons/Protección.png"/> Protección
+    </button>
+<button class="filter-btn" onclick="setFilter('category', 'Apoyo económico')" title="Filtrar por Apoyo económico">
+<img alt="Apoyo económico" class="btn-icon" src="icons/Apoyo económico.png"/> Apoyo económico
+    </button>
+<button class="filter-btn" onclick="setFilter('category', '')" title="Mostrar todos los servicios">Todos</button>
+<button class="filter-btn" onclick="setFilter('publico', '🧒 Niños, niñas y adolescentes')" title="Filtrar por público NNA">🧒 NNA</button>
+<button class="filter-btn" onclick="setFilter('horario', '☀️ Mañana')" title="Filtrar por horario mañana">☀️ Mañana</button>
+<button class="filter-btn clear-btn" onclick="clearFilters()" title="Limpiar todos los filtros">🧹 Limpiar Filtros</button>
+</div>
+<div id="map"></div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="main_v11.js"></script>
+</body>
+</html>
