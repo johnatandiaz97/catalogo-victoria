@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo de Servicios y Beneficios – Victoria</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="main_v15.js" defer></script>
+</head>
+<body>
+    <header>
+        <img src="https://i.ibb.co/xt65h5sq/20250603-1736-Correcci-n-Ortogr-fica-remix-01jwvvggfvfjdvgfm8n051tb6y-1.png" alt="Logo Municipalidad de Victoria" id="logo">
+        <h1>Catálogo de Servicios y Beneficios – Victoria</h1>
+    </header>
+    <div class="search-bar barra-no-flotante">
+        <input type="text" id="searchBox" placeholder="Buscar servicio..." oninput="updateSearch(this.value)">
+        <span class="search-icon"></span>
+    </div>
+    <div class="filter-toggle" onclick="toggleFilters()">Filtrar por <span class="toggle-icon">▼</span></div>
+    <div class="filter-overlay" id="filterOverlay">
+        <div class="filter-content">
+            <div class="filter-group">
+                <h3>Categorías</h3>
+                <button class="filter-btn" onclick="setFilter('category', 'Salud')"><span class="btn-icon local-icon" data-icon="Salud"></span>Salud</button>
+                <button class="filter-btn" onclick="setFilter('category', 'Educación')"><span class="btn-icon local-icon" data-icon="Educación"></span>Educación</button>
+                <button class="filter-btn" onclick="setFilter('category', 'Prevención')"><span class="btn-icon local-icon" data-icon="Prevención"></span>Prevención</button>
+                <button class="filter-btn" onclick="setFilter('category', 'Protección')"><span class="btn-icon local-icon" data-icon="Protección"></span>Protección</button>
+                <button class="filter-btn" onclick="setFilter('category', 'Apoyo económico')"><span class="btn-icon local-icon" data-icon="Apoyo económico"></span>Apoyo económico</button>
+            </div>
+            <div class="filter-group">
+                <h3>Público</h3>
+                <button class="filter-btn" onclick="setFilter('publico', 'Niños, niñas y adolescentes')"><span class="btn-icon local-icon" data-icon="Niños, niñas y adolescentes"></span>Niños, niñas y adolescentes</button>
+                <button class="filter-btn" onclick="setFilter('publico', 'Adultos y familias')"><span class="btn-icon local-icon" data-icon="Adultos y familias"></span>Adultos y familias</button>
+                <button class="filter-btn" onclick="setFilter('publico', 'Instituciones o empresas')"><span class="btn-icon local-icon" data-icon="Instituciones o empresas"></span>Instituciones o empresas</button>
+            </div>
+            <div class="filter-group">
+                <h3>Horario</h3>
+                <button class="filter-btn" onclick="setFilter('horario', 'Mañana')"><span class="btn-icon local-icon" data-icon="Mañana"></span>Mañana</button>
+                <button class="filter-btn" onclick="setFilter('horario', 'Tarde')"><span class="btn-icon local-icon" data-icon="Tarde"></span>Tarde</button>
+                <button class="filter-btn" onclick="setFilter('horario', 'Mañana y tarde')"><span class="btn-icon local-icon" data-icon="Mañana y tarde"></span>Mañana y tarde</button>
+                <button class="filter-btn" onclick="setFilter('horario', 'Días específicos')"><span class="btn-icon local-icon" data-icon="Días específicos"></span>Días específicos</button>
+            </div>
+            <div class="filter-group search-group">
+                <button class="filter-btn clear-btn" onclick="clearFilters()">🧹 Limpiar Filtros</button>
+            </div>
+        </div>
+    </div>
+    <div id="map"></div>
+
+    <script>
+        function toggleFilters() {
+            const overlay = document.getElementById('filterOverlay');
+            const toggle = document.querySelector('.toggle-icon');
+            if (overlay.style.display === 'none' || overlay.style.display === '') {
+                overlay.style.display = 'block';
+                toggle.textContent = '▲';
+            } else {
+                overlay.style.display = 'none';
+                toggle.textContent = '▼';
+            }
+        }
+    </script>
+
+<div class="popup-flotante" id="popup-flotante" style="
+  position: fixed;
+  top: 110px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  z-index: 2000;
+  max-width: 320px;
+  padding: 16px;
+  display: none;
+  font-size: 14px;
+  overflow-y: auto;
+  max-height: 80vh;
+">
+  <div style="text-align:right; margin-bottom:5px;">
+    <button onclick="cerrarPopupFlotante()" style="border:none; background:none; font-size:18px; cursor:pointer;">×</button>
+  </div>
+  <div class="popup-title" id="popup-title" style="font-weight:bold; font-size:16px; margin-bottom:6px;"></div>
+  <div id="popup-desc" style="font-size:13px; line-height:1.4;"></div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,520 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: 'Montserrat', sans-serif;
+    background: #f7f7f7;
+    position: relative; /* Asegurar contexto base */
+}
+header {
+    background: linear-gradient(90deg, #0033a0, #d52b1e);
+    color: white;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    z-index: 1000; /* Prioridad para header */
+}
+#logo {
+    height: 60px;
+    width: auto;
+    display: block;
+    object-fit: contain;
+}
+header h1 {
+    font-size: 20px;
+    margin: 0;
+}
+#map {
+    width: 100%;
+    height: 100%;
+    z-index: 600; /* Establecer un z-index base bajo para el mapa */
+}
+#searchBox {
+    flex: 1;
+    padding: 8px;
+    font-size: 14px;
+    border: none;
+    outline: none;
+}
+.search-icon {
+    width: 20px;
+    height: 20px;
+    background-image: url('https://img.icons8.com/ios-filled/20/0033a0/search.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+.filter-toggle {
+    position: fixed;
+    top: 100px;
+    right: 10px;
+    background: #0033a0;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s ease;
+    z-index: 1200; /* Prioridad para filter-toggle, debajo de popups */
+}
+.filter-toggle:hover {
+    background-color: #002275;
+}
+.toggle-icon {
+    margin-left: 5px;
+}
+.filter-overlay {
+    display: none;
+    position: fixed;
+    top: 140px;
+    right: 10px;
+    width: 300px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    z-index: 1200; /* Igual que filter-toggle */
+    overflow-y: auto;
+    max-height: 70%;
+}
+.filter-content {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+}
+.filter-group {
+    background: white;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease;
+}
+.filter-group:hover {
+    transform: translateY(-1px);
+}
+.filter-group h3 {
+    margin: 0 0 10px 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    text-align: center;
+    background: #0078d4;
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+}
+.filter-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    margin: 5px 0;
+    border: none;
+    border-radius: 6px;
+    background: linear-gradient(45deg, #4a90e2, #63b8ff);
+    color: white;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    min-width: 200px;
+    justify-content: flex-start;
+    text-align: left;
+}
+.filter-btn .btn-icon {
+    width: 18px;
+    height: 18px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    transition: transform 0.3s ease;
+}
+.filter-btn:hover {
+    transform: scale(1.00) rotate(0.5deg);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    background: linear-gradient(45deg, #357ab7, #4dabf7);
+}
+.filter-btn:active {
+    transform: scale(0.98);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+.clear-btn {
+    background: linear-gradient(45deg, #e63946, #f28482);
+    color: white;
+    width: 100%;
+    margin-top: 10px;
+    min-width: 200px;
+}
+.clear-btn:hover {
+    background: linear-gradient(45deg, #c22f3a, #e06b70);
+}
+
+.popup-content {
+    font-size: 14px;
+    max-width: 280px;
+}
+.popup-title {
+    font-weight: bold;
+    background-color: #0078d4;
+    color: white;
+    padding: 6px;
+    border-radius: 5px 5px 0 0;
+    text-align: center;
+}
+.popup-desc {
+    background: #f9f9f9;
+    padding: 6px;
+    border-bottom: 1px solid #ccc;
+}
+.accordion {
+    background-color: #eee;
+    color: #333;
+    cursor: pointer;
+    padding: 6px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    transition: background-color 0.2s ease;
+    font-size: 13px;
+}
+.accordion:hover {
+    background-color: #ddd;
+}
+.panel {
+    padding: 6px;
+    display: none;
+    background-color: white;
+    overflow: hidden;
+    font-size: 13px;
+    border-bottom: 1px solid #ccc;
+}
+.popup-btn {
+    display: inline-block;
+    margin: 6px 0 3px 0;
+    padding: 6px 10px;
+    background-color: #0033a0;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    border: none;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+.popup-btn:hover {
+    background-color: #002275;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+.popup-btn.secondary {
+    background-color: #555;
+    color: #fff;
+    font-weight: 500;
+}
+.popup-btn.secondary:hover {
+    background-color: #333;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.leaflet-popup-content {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.btn-icon {
+  width: 18px;
+  height: 18px;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+.marcador-categoria {
+  background-color: white;
+  border: 2px solid #e60026;
+  border-radius: 50%;
+  padding: 2px;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 3px rgba(0,0,0,0.25);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.marcador-categoria img {
+  width: 20px;
+  height: 20px;
+}
+.icon-hover:hover {
+    transform: scale(1.2);
+    transition: transform 0.2s ease;
+    z-index: 1000;
+}
+.popup-btn:visited {
+    color: #fff;
+}
+
+/* === ETAPA 12 – Popup visual refinado === */
+
+.leaflet-popup-content-wrapper {
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+  background-color: #fff;
+  animation: popupFadeIn 0.25s ease-in-out;
+  z-index: 1500; /* Aumentado para superar header y search-bar */
+}
+
+.leaflet-popup {
+  z-index: 1500; /* Forzar el contenedor padre del popup */
+}
+
+.leaflet-popup-pane {
+  z-index: 1500 !important; /* Forzar prioridad con !important */
+}
+
+@keyframes popupFadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.popup-title {
+  background-color: #0033a0;
+  color: white;
+  font-weight: 600;
+  border-radius: 10px 10px 0 0;
+  padding: 8px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.popup-desc {
+  background-color: #f4f6f9;
+  padding: 8px;
+  border-bottom: 1px solid #ccc;
+}
+
+.accordion {
+  background-color: #f0f0f0;
+  color: #333;
+  cursor: pointer;
+  padding: 8px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  transition: background-color 0.2s ease;
+  font-size: 13px;
+  position: relative;
+}
+
+.accordion::after {
+  content: '▼';
+  position: absolute;
+  right: 12px;
+  transition: transform 0.2s ease;
+}
+
+.accordion.active::after {
+  transform: rotate(180deg);
+}
+
+.panel {
+  padding: 8px;
+  display: none;
+  background-color: white;
+  overflow: hidden;
+  font-size: 13px;
+  border-bottom: 1px solid #ccc;
+}
+
+.popup-btn {
+  display: inline-block;
+  margin: 8px 6px 3px 0;
+  padding: 6px 12px;
+  background-color: #0033a0;
+  color: #fff !important;
+  text-decoration: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  border: none;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+.popup-btn:hover {
+  background-color: #002275;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.popup-btn.secondary {
+  background-color: #555;
+  color: #fff !important;
+}
+.popup-btn.secondary:hover {
+  background-color: #333;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.popup-btn:visited {
+  color: #fff !important;
+}
+
+/* === ETAPA 10 – Interacción refinada del mapa === */
+.leaflet-marker-icon {
+  cursor: pointer;
+}
+.marcador-bounce {
+  animation: bounce 0.3s ease;
+}
+@keyframes bounce {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.25); }
+  100% { transform: scale(1); }
+}
+
+/* Media Queries para móviles */
+@media (max-width: 768px) {
+    .filter-toggle {
+        top: 70px;
+        right: 10px;
+    }
+    .filter-overlay {
+        top: 110px;
+        right: 10px;
+        max-width: 400px;
+    }
+    header {
+        flex-direction: column;
+        text-align: center;
+    }
+    #logo {
+        height: 50px;
+    }
+    header h1 {
+        font-size: 18px;
+    }
+}
+
+/* Clases extraídas desde JS para visualización */
+
+.popup-al-frente {
+  z-index: 1500 !important;
+}
+
+.ajuste-barra {
+  top: 90px;
+  transition: top 0.3s;
+}
+
+.oculto {
+  display: none !important;
+}
+
+.barra-no-flotante {
+    position: relative;
+    top: auto;
+    left: auto;
+    transform: none;
+    margin: 20px auto 0 auto;
+    width: 60%; /* Reducción del 30% de su max-width original */
+    max-width: none;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    background: #ffffff;
+    transition: box-shadow 0.3s ease;
+}
+
+.barra-no-flotante:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+/* === Barra flotante activada === */
+
+.search-bar {
+    position: fixed;
+    top: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    width: 90%;
+    max-width: 500px;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+    padding: 6px 12px;
+    z-index: 1200;
+    transition: box-shadow 0.3s ease, background 0.3s ease;
+}
+
+.search-bar:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+#searchBox {
+    flex: 1;
+    padding: 10px;
+    font-size: 14px;
+    border: none;
+    outline: none;
+    background: transparent;
+}
+
+.search-icon {
+    width: 20px;
+    height: 20px;
+    background-image: url('https://img.icons8.com/ios-filled/20/0033a0/search.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin-left: 10px;
+}
+
+
+
+.popup-flotante {
+  position: fixed;
+  top: 110px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  z-index: 2000;
+  max-width: 320px;
+  padding: 16px;
+  display: none;
+  font-size: 14px;
+  overflow-y: auto;
+  max-height: 80vh;
+  pointer-events: auto;
+}
+
+
+/* Solo para popups extensos con muchos servicios */
+.popup-flotante.popup-largo {
+  bottom: 20px;
+  max-height: none !important;
+}
+
+/* Botón de cierre estilizado para popups */
+.cerrar-popup-icon {
+  position: absolute;
+  top: 9px;
+  right: 8px;
+  background-color: #f80303;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 26px;
+  height: 26px;
+  font-size: 16px;
+  cursor: pointer;
+  z-index: 2100;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.cerrar-popup-icon:hover {
+  background-color: #c10000;
+  transform: scale(1.1);
+}
+
